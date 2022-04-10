@@ -42,7 +42,24 @@ def GaussJordan(aug_mat):
                     aug_mat[l][k] = aug_mat[l][k] - factor*aug_mat[l][i]
 
     return aug_mat
+#for getting data 
+#step 2 - creating reduced REF form
+def GaussJordan_data(aug_mat,B,name):      
+    for i in range(len(aug_mat[0])):
+        p = aug_mat[i][i]
+        for j in range(len(aug_mat)):
+            aug_mat[j][i] = aug_mat[j][i]/p
+        for k in range(len(aug_mat[0])):
+            if k == i or aug_mat[i][k] == 0:
+                next
+            else:
+                factor = aug_mat[i][k]
+                for l in range(len(aug_mat)):
+                    aug_mat[l][k] = aug_mat[l][k] - factor*aug_mat[l][i]
+        with open(name, 'a') as data:
+            print(aug_mat[len(B)],',',i, file= data)
 
+    return aug_mat
 
 
 
@@ -85,6 +102,31 @@ def Gauss_Seidel(A, B, x=None, tol = 1e-5):
             temp = x[i]
             x[i] = d / A[i][i]
             sum += (x[i]-temp)**2
+ 
+        
+        #Error update
+        err = sum
+    
+    return x
+def Gauss_Seidel_data(A, B,name, x=None, tol = 1e-5):
+    n = len(A)
+    if x is None: x = np.zeros(n)
+    err = np.inf
+
+    while err>tol:
+        sum = 0
+        #calculation of x 
+        for i in range(n):
+            d = B[i]
+            for j in range(n):
+                if(i != j):
+                    d-=A[i][j] * x[j]
+            # Storing previous and updating the value of our solution
+            temp = x[i]
+            x[i] = d / A[i][i]
+            sum += (x[i]-temp)**2
+            with open(name, 'a') as data:
+                print(x,',',i, file= data)
         
         #Error update
         err = sum
